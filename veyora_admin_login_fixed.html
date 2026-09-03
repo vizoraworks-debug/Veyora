@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>VEYORA — Smart Shopping</title>
+<style>
+:root{
+  --blue:#2576d8;--blue2:#4f46e5;--ink:#202938;--muted:#737b87;--bg:#f6f8fb;
+  --card:#fff;--line:#e6e9ef;--green:#19a974;--danger:#e5484d;--shadow:0 8px 30px rgba(32,41,56,.08);
+}
+*{box-sizing:border-box} html,body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+button,input,select,textarea{font:inherit} button{cursor:pointer;border:0}
+.app{max-width:760px;margin:auto;min-height:100vh;background:#fff;box-shadow:0 0 30px rgba(0,0,0,.04);padding-bottom:78px}
+.top{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line)}
+.head{height:76px;display:flex;align-items:center;justify-content:space-between;padding:0 18px}
+.logo{display:flex;align-items:center;gap:9px;font-size:29px;font-weight:800;letter-spacing:6px;color:var(--blue)}
+.logoMark{width:35px;height:35px;border:5px solid var(--blue);border-top-color:transparent;border-radius:10px 10px 15px 15px;transform:rotate(0deg);position:relative}
+.logoMark:after{content:"";position:absolute;width:12px;height:12px;border:4px solid var(--blue);border-radius:50%;left:6px;top:-12px;background:#fff}
+.headicons{display:flex;gap:15px}.iconbtn{background:none;font-size:26px;color:#334155;padding:5px}
+.searchWrap{padding:0 16px 12px;display:flex;gap:8px}
+.search{height:52px;border:1px solid #dce1e8;border-radius:15px;display:flex;align-items:center;flex:1;background:#fff}
+.search input{border:0;outline:0;width:100%;font-size:17px;padding:0 14px;color:var(--ink)}
+.search button{width:52px;background:none;font-size:24px;color:#444}
+.page{padding:18px 16px}
+.location{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 2px 18px}
+.locationText{display:flex;gap:10px;align-items:flex-start}.pin{font-size:28px;color:#ef8c38}
+.small{font-size:13px;color:var(--muted)}.locTitle{font-weight:800;font-size:16px}.locBtn{background:#fff5e8;color:#db8a34;border-radius:13px;padding:11px 14px;font-weight:800}
+.hero{border-radius:22px;min-height:190px;padding:25px 22px;color:#fff;position:relative;overflow:hidden;background:linear-gradient(135deg,#2a1b12,#a74918 55%,#f7b62b)}
+.hero:before,.hero:after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.08)}.hero:before{width:280px;height:280px;right:-100px;top:-110px}.hero:after{width:170px;height:170px;right:45px;bottom:-120px}
+.hero h1{font-size:28px;margin:0 0 3px;text-transform:uppercase;letter-spacing:1px;position:relative;z-index:1}.hero h2{font-size:18px;margin:0 0 18px;position:relative;z-index:1}.hero .sale{font-size:25px;font-weight:900;position:relative;z-index:1}.hero .cta{margin-top:15px;background:#fff;color:#a94918;border-radius:10px;padding:10px 15px;font-weight:900;position:relative;z-index:1}
+.sectionHead{display:flex;align-items:center;justify-content:space-between;margin:28px 2px 13px}.sectionHead h2{font-size:23px;margin:0;text-transform:uppercase;letter-spacing:.3px}.view{color:#626a75;font-weight:700}
+.chips{display:flex;gap:10px;overflow:auto;padding-bottom:5px}.chip{white-space:nowrap;border:1px solid #dddfe5;background:#fff;border-radius:22px;padding:10px 17px}.chip.active{background:#5046df;color:#fff;border-color:#5046df}
+.promo{margin-top:16px;border-radius:20px;background:linear-gradient(120deg,#eef8ff,#fff);padding:18px;display:flex;justify-content:space-between;align-items:center;overflow:hidden}.promo h3{font-size:25px;color:#55a9e5;margin:0}.promo b{color:#1c77c9}.gadget{font-size:65px;letter-spacing:-15px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}.product{border:1px solid #e5e8ee;border-radius:18px;background:#fff;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.03);position:relative}.productImg{height:145px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#f4f7fa,#e8edf3);font-size:68px}.discount{position:absolute;top:9px;left:9px;background:#ef6c72;color:#fff;border-radius:15px;padding:5px 9px;font-size:12px;font-weight:900}.pbody{padding:11px}.pname{font-weight:800;line-height:1.25;min-height:40px}.price{font-weight:900;margin-top:7px}.old{color:#9aa1ab;text-decoration:line-through;font-weight:500;font-size:13px;margin-left:5px}.add{width:100%;margin-top:10px;padding:10px;border-radius:10px;background:#edf4ff;color:#2168bf;font-weight:900}
+.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);max-width:760px;width:100%;height:74px;background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);z-index:30}.nav{background:#fff;color:#858b94;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}.nav.active{color:#2370c8}.nav span:first-child{font-size:24px}.nav span:last-child{font-size:12px;font-weight:600}
+.empty{min-height:560px;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center}.emptyArt{font-size:105px;opacity:.55}.empty h2{font-size:22px;color:#4e46c7}.shop{background:#48a7df;color:#fff;padding:14px 35px;border-radius:9px;font-size:20px;font-weight:900}
+.profileBox{margin-top:25px;border-radius:20px;background:#fff;padding:28px 18px;box-shadow:var(--shadow);text-align:center}.avatar{width:80px;height:80px;border-radius:50%;background:#eef4ff;margin:auto;display:grid;place-items:center;font-size:38px}.loginBtn{background:#5d68c9;color:#fff;padding:13px 35px;border-radius:8px;font-weight:800}.outline{background:#fff;border:1px solid #7771bb;color:#5c61aa;padding:13px 35px;border-radius:8px;font-weight:800}
+.orderTabs{display:flex;gap:10px;overflow:auto;margin:5px 0 20px}.orderTab{white-space:nowrap;padding:10px 18px;border-radius:22px;background:#f0f1f4}.orderTab.active{background:#5046df;color:#fff}
+.modal{position:fixed;inset:0;background:rgba(10,15,25,.48);display:none;align-items:flex-end;z-index:50}.modal.show{display:flex}.sheet{background:#fff;width:100%;max-width:760px;margin:auto;border-radius:24px 24px 0 0;padding:22px;max-height:92vh;overflow:auto}.close{float:right;background:#f1f3f6;border-radius:50%;width:36px;height:36px}.sheet h2{margin-top:5px}.form{display:grid;gap:10px}.form input,.form select,.form textarea{padding:12px;border:1px solid #d9dde5;border-radius:10px;outline:0}.form label{font-weight:700;font-size:14px}.primary{background:#4f46e5;color:#fff;padding:13px;border-radius:10px;font-weight:800}.danger{background:#fff0f0;color:#c9353a;padding:11px;border-radius:10px;font-weight:800}
+.cartRow{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);align-items:center}.cartIcon{width:70px;height:70px;border-radius:13px;background:#f2f5f8;display:grid;place-items:center;font-size:35px}.qty{display:flex;gap:7px;align-items:center;margin-top:7px}.qty button{width:27px;height:27px;border-radius:7px;background:#eef1f5}.summary{background:#f7f8fa;border-radius:16px;padding:15px;margin-top:18px}.summary div{display:flex;justify-content:space-between;padding:5px 0}.total{font-size:20px;font-weight:900}
+.admin{display:none}.admin.show{display:block}.adminCards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{padding:15px;background:#f5f7fb;border-radius:15px}.stat b{font-size:24px;display:block}.adminProduct{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}.mini{width:52px;height:52px;background:#f1f4f7;border-radius:10px;display:grid;place-items:center;font-size:27px}
+.notice{padding:12px;border-radius:12px;background:#eef7ff;color:#235e9c;margin:10px 0;font-size:13px}
+@media(min-width:761px){.modal{align-items:center}.sheet{border-radius:24px;max-width:600px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <div class="head">
+      <div class="logo"><div class="logoMark"></div>veyora</div>
+      <div class="headicons">
+        <button class="iconbtn" onclick="openFavorites()">♥</button>
+        <button class="iconbtn" onclick="openSupport()">♙</button>
+        <button class="iconbtn" onclick="showPage('profile')">◎</button>
+      </div>
+    </div>
+    <div class="searchWrap" id="searchWrap">
+      <div class="search"><input id="search" placeholder="Search for Products..." oninput="renderProducts()"><button onclick="renderProducts()">⌕</button></div>
+    </div>
+  </div>
+
+  <main id="main"></main>
+
+  <nav class="bottom">
+    <button class="nav active" data-page="home" onclick="showPage('home')"><span>⌂</span><span>HOME</span></button>
+    <button class="nav" data-page="cart" onclick="showPage('cart')"><span>🛒</span><span>CART</span></button>
+    <button class="nav" data-page="orders" onclick="showPage('orders')"><span>♧</span><span>NOTIFICATION</span></button>
+    <button class="nav" data-page="profile" onclick="showPage('profile')"><span>♙</span><span>PROFILE</span></button>
+  </nav>
+</div>
+
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()"><div class="sheet" id="sheet"></div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://qxgxwiqgcxjybpzuwmcs.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_fYwm6re_xn-V33tavAr15g_-RBUGH7-";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+const ADMIN_EMAIL = "mubashir098@gmail.com";
+const defaultProducts=[];
+
+let store={products:[],cart:[],orders:[],user:null,location:'',favorites:[]};
+let page='home', orderFilter='ALL', selectedCat='All';
+let appReady=false;
+
+async function initSupabase(){
+  if(SUPABASE_URL.includes('YOUR_') || SUPABASE_PUBLISHABLE_KEY.includes('YOUR_')){
+    document.getElementById('main').innerHTML='<div class="page"><div class="profileBox"><h2>Connect VEYORA to Supabase</h2><p>Open the downloaded setup SQL, create your Supabase project, then put your Project URL and Publishable Key into this HTML file.</p></div></div>';
+    return;
+  }
+  const {data:{session}}=await supabaseClient.auth.getSession();
+  store.user=session?.user||null;
+  if(store.user){
+    const {data:profile}=await supabaseClient.from('profiles').select('name,phone,location,role').eq('id',store.user.id).maybeSingle();
+    if(profile){store.user={...store.user,name:profile.name||store.user.email.split('@')[0],phone:profile.phone||'',role:profile.role||'customer'};store.location=profile.location||'';}
+  }
+  await loadProducts();
+  await loadCart();
+  await loadOrders();
+  appReady=true;
+  render();
+  supabaseClient.auth.onAuthStateChange(async (_event,session)=>{
+    store.user=session?.user||null;
+    if(store.user){
+      const {data:profile}=await supabaseClient.from('profiles').select('name,phone,location,role').eq('id',store.user.id).maybeSingle();
+      if(profile){store.user={...store.user,...profile};store.location=profile.location||'';}
+    } else {store.cart=[];store.orders=[];store.location='';}
+    await loadProducts(); await loadCart(); await loadOrders(); render();
+  });
+}
+
+async function loadProducts(){
+  const {data,error}=await supabaseClient.from('products').select('*').order('created_at',{ascending:false});
+  if(!error) store.products=(data||[]).map(p=>({...p,id:p.id,old:p.old_price,icon:p.icon||'📦'}));
+}
+async function loadCart(){
+  if(!store.user){store.cart=[];return;}
+  const {data}=await supabaseClient.from('cart_items').select('product_id,quantity').eq('user_id',store.user.id);
+  store.cart=(data||[]).map(x=>({id:x.product_id,qty:x.quantity}));
+}
+async function loadOrders(){
+  if(!store.user){store.orders=[];return;}
+  const query=store.user.role==='admin'
+    ? supabaseClient.from('orders').select('*,order_items(*)').order('created_at',{ascending:false})
+    : supabaseClient.from('orders').select('*,order_items(*)').eq('user_id',store.user.id).order('created_at',{ascending:false});
+  const {data}=await query;
+  store.orders=(data||[]).map(o=>({id:o.id,date:new Date(o.created_at).toLocaleString('en-IN'),items:(o.order_items||[]).map(i=>({id:i.product_id,name:i.product_name,qty:i.quantity,price:i.unit_price,icon:i.icon||'📦'})),total:o.total,status:o.status,location:o.delivery_location}));
+}
+async function saveProfile(){
+  if(!store.user)return;
+  await supabaseClient.from('profiles').upsert({id:store.user.id,name:store.user.name||'',phone:store.user.phone||'',location:store.location||''});
+}
+
+
+function showPage(p){
+ page=p; document.querySelectorAll('.nav').forEach(x=>x.classList.toggle('active',x.dataset.page===p));
+ document.getElementById('searchWrap').style.display=p==='home'?'block':'none';
+ render();
+}
+function render(){
+ if(page==='home') renderHome();
+ if(page==='cart') renderCart();
+ if(page==='orders') renderOrders();
+ if(page==='profile') renderProfile();
+ if(page==='admin') renderAdmin();
+}
+function renderHome(){
+ const cats=['All','Televisions & Displays','Beauty & Health','Smart Gadgets','Home & Kitchen','Wearables'];
+ let q=(document.getElementById('search')?.value||'').toLowerCase();
+ let ps=store.products.filter(p=>(selectedCat==='All'||p.category===selectedCat)&&(!q||(p.name+' '+p.category).toLowerCase().includes(q)));
+ document.getElementById('main').innerHTML=`<div class="page">
+  <div class="location"><div class="locationText"><div class="pin">⌖</div><div><div class="locTitle">Select your delivery location</div><div class="small">${store.location?esc(store.location):'Choose your location to see product availability'}</div></div></div><button class="locBtn" onclick="setLocation()">Set Location ➤</button></div>
+  <div class="hero"><h1>Nailgun</h1><h2>FEATURE SALE ON VEYORA!</h2><div class="sale">BIG DISCOUNTS • UP TO 50% OFF</div><button class="cta" onclick="selectedCat='Smart Gadgets';renderHome()">SHOP SALE</button></div>
+  <div class="sectionHead"><h2>Top Categories</h2><span class="view">VIEW MORE →</span></div>
+  <div class="chips">${cats.map(c=>`<button class="chip ${selectedCat===c?'active':''}" onclick="selectedCat='${c.replace(/'/g,"\\'")}';renderHome()">${c}</button>`).join('')}</div>
+  <div class="promo"><div><h3>Smart Gadgets</h3><b>STARTING ₹99</b></div><div class="gadget">🎧⌚🔊</div></div>
+  <div class="sectionHead"><h2>${selectedCat==='All'?'Home & Kitchen':esc(selectedCat)}</h2><span class="view">${ps.length} ITEMS</span></div>
+  <div class="grid">${ps.length?ps.map(productCard).join(''):`<div style="grid-column:1/-1;text-align:center;padding:45px;color:#777">No products found.</div>`}</div>
+ </div>`;
+}
+function productCard(p){
+ return `<div class="product"><div class="discount">${p.discount}% off</div><div class="productImg">${p.icon||'📦'}</div><div class="pbody"><div class="pname">${esc(p.name)}</div><div class="price">${money(p.price)} <span class="old">${money(p.old_price)}</span></div><button class="add" onclick="addCart(${p.id})">ADD TO CART</button></div></div>`;
+}
+async function addCart(id){
+  if(!store.user){openLogin('Please sign in to add items to your cart.');return;}
+  const x=store.cart.find(i=>i.id===id);
+  const qty=(x?.qty||0)+1;
+  const {error}=await supabaseClient.from('cart_items').upsert({user_id:store.user.id,product_id:id,quantity:qty},{onConflict:'user_id,product_id'});
+  if(error){toast(error.message);return}
+  await loadCart(); render(); toast('Added to cart');
+}
+function cartCount(){return store.cart.reduce((a,b)=>a+b.qty,0)}
+function renderCart(){
+ if(!store.cart.length){document.getElementById('main').innerHTML=`<div class="empty"><div class="emptyArt">🛒</div><h2>Your Cart is Empty</h2><p class="small">Add products from the store to see them here.</p><button class="shop" onclick="showPage('home')">SHOP NOW</button></div>`;return}
+ let subtotal=store.cart.reduce((a,i)=>a+store.products.find(p=>p.id===i.id).price*i.qty,0);
+ document.getElementById('main').innerHTML=`<div class="page"><div class="sectionHead"><h2>Your Cart</h2><span>${cartCount()} items</span></div>
+ ${store.cart.map(i=>{let p=store.products.find(p=>p.id===i.id);return `<div class="cartRow"><div class="cartIcon">${p.icon}</div><div style="flex:1"><b>${esc(p.name)}</b><div class="price">${money(p.price)}</div><div class="qty"><button onclick="changeQty(${p.id},-1)">−</button>${i.qty}<button onclick="changeQty(${p.id},1)">+</button><button class="danger" style="margin-left:7px;padding:4px 8px" onclick="removeCart(${p.id})">Remove</button></div></div></div>`}).join('')}
+ <div class="summary"><div><span>Subtotal</span><b>${money(subtotal)}</b></div><div><span>Delivery</span><b>${subtotal>=999?'FREE':money(49)}</b></div><hr><div class="total"><span>Total</span><span>${money(subtotal+(subtotal>=999?0:49))}</span></div></div>
+ <button class="primary" style="width:100%;margin-top:12px" onclick="checkout()">PROCEED TO CHECKOUT</button></div>`;
+}
+async function changeQty(id,n){
+  if(!store.user)return;
+  let x=store.cart.find(i=>i.id===id); if(!x)return;
+  const qty=x.qty+n;
+  if(qty<=0){await removeCart(id);return}
+  const {error}=await supabaseClient.from('cart_items').update({quantity:qty}).eq('user_id',store.user.id).eq('product_id',id);
+  if(error){toast(error.message);return}
+  await loadCart(); renderCart();
+}
+async function removeCart(id){
+  if(!store.user)return;
+  await supabaseClient.from('cart_items').delete().eq('user_id',store.user.id).eq('product_id',id);
+  await loadCart(); renderCart();
+}
+function checkout(){
+ if(!store.user){openLogin('Please sign in before checkout.');return}
+ if(!store.location){setLocation();return}
+ let total=store.cart.reduce((a,i)=>a+store.products.find(p=>p.id===i.id).price*i.qty,0); total+=total>=999?0:49;
+ document.getElementById('sheet').innerHTML=`<button class="close" onclick="closeModal()">×</button><h2>Checkout</h2><div class="notice">Delivery to <b>${esc(store.location)}</b></div><div class="form"><label>Full Name<input id="coName" value="${esc(store.user.name||'')}"></label><label>Phone<input id="coPhone" placeholder="10-digit mobile number"></label><label>Address<textarea id="coAddress" rows="3" placeholder="House / street / area"></textarea></label><label>Payment<select id="coPay"><option>Cash on Delivery</option><option>UPI / Online Payment (demo)</option></select></label><button class="primary" onclick="placeOrder()">PLACE ORDER • ${money(total)}</button></div>`;
+ openModal();
+}
+async function placeOrder(){
+  if(!store.user){toast('Please log in');return}
+  const items=store.cart.map(i=>{let p=store.products.find(p=>p.id===i.id);return {id:p.id,name:p.name,qty:i.qty,price:p.price,icon:p.icon}});
+  let total=items.reduce((a,i)=>a+i.price*i.qty,0); total+=total>=999?0:49;
+  const name=document.getElementById('coName').value.trim(), phone=document.getElementById('coPhone').value.trim(), address=document.getElementById('coAddress').value.trim();
+  if(!name||!phone||!address){toast('Please complete delivery details');return}
+  const {data:order,error}=await supabaseClient.from('orders').insert({user_id:store.user.id,total,delivery_location:store.location,status:'PENDING',customer_name:name,customer_phone:phone,delivery_address:address,payment_method:document.getElementById('coPay').value}).select().single();
+  if(error){toast(error.message);return}
+  const rows=items.map(i=>({order_id:order.id,product_id:i.id,product_name:i.name,quantity:i.qty,unit_price:i.price,icon:i.icon}));
+  const {error:itemError}=await supabaseClient.from('order_items').insert(rows);
+  if(itemError){toast(itemError.message);return}
+  await supabaseClient.from('cart_items').delete().eq('user_id',store.user.id);
+  await loadCart(); await loadOrders(); closeModal(); showPage('orders'); toast('Order placed successfully');
+}
+function renderOrders(){
+ let orders=store.orders;
+ let tabs=['ALL','CART','PENDING','DISPATCHED','IN TRANSIT','DELIVERED'];
+ document.getElementById('main').innerHTML=`<div class="page"><div class="orderTabs">${tabs.map(t=>`<button class="orderTab ${orderFilter===t?'active':''}" onclick="orderFilter='${t}';renderOrders()">${t}</button>`).join('')}</div>
+ ${orders.length?orders.filter(o=>orderFilter==='ALL'||(orderFilter==='CART'&&false)||o.status===orderFilter).map(o=>`<div class="profileBox" style="text-align:left;margin-top:10px"><div style="display:flex;justify-content:space-between"><b>Order #${o.id}</b><b style="color:#4f46e5">${o.status}</b></div><div class="small">${o.date} • ${esc(o.location)}</div>${o.items.map(i=>`<div style="padding:8px 0">${i.icon} ${esc(i.name)} × ${i.qty} — <b>${money(i.price*i.qty)}</b></div>`).join('')}<hr><b>Total: ${money(o.total)}</b></div>`).join(''):`<div class="empty" style="min-height:450px"><div class="emptyArt">🧾</div><h2>No orders yet</h2><button class="shop" onclick="showPage('home')">SHOP NOW</button></div>`}</div>`;
+}
+function renderProfile(){
+ if(!store.user){document.getElementById('main').innerHTML=`<div class="page"><div class="profileBox"><div class="avatar">♙</div><h2>PLEASE SIGN IN</h2><p>You need to be logged in to view your profile.</p><div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><button class="loginBtn" onclick="openLogin()">LOGIN</button><button class="outline" onclick="openSignup()">CREATE ACCOUNT</button></div></div><div class="profileBox" style="text-align:left"><b>Admin access</b><p class="small">For store owner management, use the demo admin panel.</p><button class="primary" onclick="openAdminLogin()">OPEN ADMIN</button></div></div>`;return}
+ document.getElementById('main').innerHTML=`<div class="page"><div class="profileBox"><div class="avatar">👤</div><h2>${esc(store.user.name)}</h2><p>${esc(store.user.email||'')}</p><p class="small">${store.user.phone||''}</p><button class="outline" onclick="logout()">LOG OUT</button></div><div class="profileBox" style="text-align:left"><b>My Account</b><p>❤️ Favorites: ${store.favorites.length}</p><p>📦 Orders: ${store.orders.length}</p><button class="primary" onclick="openAdminLogin()">STORE ADMIN</button></div></div>`;
+}
+function openLogin(msg=''){
+  document.getElementById('sheet').innerHTML=`
+    <button class="close" onclick="closeModal()">×</button>
+    <h2>Login to VEYORA</h2>
+    ${msg?`<div class="notice">${esc(msg)}</div>`:''}
+    <div class="form">
+      <label>Email<input id="loginEmail" type="email" autocomplete="email" placeholder="you@example.com"></label>
+      <label>Password<input id="loginPass" type="password" autocomplete="current-password" placeholder="Password"></label>
+      <button class="primary" onclick="login()">LOGIN</button>
+      <button class="outline" onclick="openSignup()">CREATE ACCOUNT</button>
+      <button style="background:none;color:#4f46e5;font-weight:800;padding:8px" onclick="openForgotPassword()">Forgot password?</button>
+    </div>`;
+  openModal();
+}
+
+async function login(){
+  const email=document.getElementById('loginEmail').value.trim();
+  const password=document.getElementById('loginPass').value;
+  if(!email||!password){toast('Enter email and password');return}
+  const {error}=await supabaseClient.auth.signInWithPassword({email,password});
+  if(error){toast(error.message);return}
+  await loadProducts();
+  await loadCart();
+  await loadOrders();
+  closeModal();
+  showPage('profile');
+  toast('Login successful');
+}
+
+function openForgotPassword(){
+  document.getElementById('sheet').innerHTML=`
+    <button class="close" onclick="closeModal()">×</button>
+    <h2>Reset Password</h2>
+    <p class="small">Enter your VEYORA account email. Supabase will send a password-reset email.</p>
+    <div class="form">
+      <label>Email<input id="resetEmail" type="email" autocomplete="email" placeholder="you@example.com"></label>
+      <button class="primary" onclick="sendResetEmail()">SEND RESET EMAIL</button>
+      <button class="outline" onclick="openLogin()">BACK TO LOGIN</button>
+    </div>`;
+  openModal();
+}
+
+async function sendResetEmail(){
+  const email=document.getElementById('resetEmail').value.trim();
+  if(!email){toast('Enter your email');return}
+  const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:window.location.href});
+  if(error){toast(error.message);return}
+  closeModal();
+  toast('Password reset email sent');
+}
+function openSignup(){document.getElementById('sheet').innerHTML=`<button class="close" onclick="closeModal()">×</button><h2>Create Account</h2><div class="form"><label>Name<input id="suName" autocomplete="name"></label><label>Email<input id="suEmail" type="email" autocomplete="email"></label><label>Phone<input id="suPhone" autocomplete="tel"></label><label>Password<input id="suPass" type="password" autocomplete="new-password"></label><button class="primary" onclick="signup()">CREATE ACCOUNT</button></div>`;openModal()}
+async function signup(){
+  let name=document.getElementById('suName').value.trim(),email=document.getElementById('suEmail').value.trim(),password=document.getElementById('suPass').value;
+  if(!name||!email||password.length<6){toast('Name, email and a 6+ character password are required');return}
+  const {data,error}=await supabaseClient.auth.signUp({email,password});
+  if(error){toast(error.message);return}
+  if(data.user) await supabaseClient.from('profiles').upsert({id:data.user.id,name,phone:document.getElementById('suPhone').value});
+  closeModal(); toast('Account created. Check your email if verification is enabled.');
+}
+async function logout(){await supabaseClient.auth.signOut();showPage('home')}
+function setLocation(){document.getElementById('sheet').innerHTML=`<button class="close" onclick="closeModal()">×</button><h2>Select Delivery Location</h2><p class="small">Your delivery location is saved to your VEYORA profile in Supabase.</p><div class="form"><input id="locInput" placeholder="City / area / PIN code" value="${esc(store.location)}"><button class="primary" onclick="saveLocation()">SAVE LOCATION</button></div>`;openModal()}
+async function saveLocation(){let v=document.getElementById('locInput').value.trim();if(v){store.location=v;await saveProfile();closeModal();render();toast('Location saved')}}
+function openFavorites(){let fav=store.products.filter(p=>store.favorites.includes(p.id));document.getElementById('sheet').innerHTML=`<button class="close" onclick="closeModal()">×</button><h2>Favorites</h2>${fav.length?fav.map(productCard).join(''):'<p class="small">No favorite products yet. Use the product area to add favorites in the admin/custom version.</p>'}`;openModal()}
+function openSupport(){document.getElementById('sheet').innerHTML=`<button class="close" onclick="closeModal()">×</button><h2>Customer Support</h2><div class="notice">This demo includes a support screen. Connect WhatsApp, email or a ticket backend later.</div><div class="form"><input placeholder="Your email"><textarea rows="4" placeholder="How can we help?"></textarea><button class="primary" onclick="toast('Support request saved in demo');closeModal()">SEND REQUEST</button></div>`;openModal()}
+function openAdminLogin(){document.getElementById('sheet').innerHTML=`<button class="close" onclick="closeModal()">×</button><h2>Admin Login</h2><div class="notice">Sign in with the VEYORA admin account created in Supabase Authentication.</div><div class="form"><input id="adEmail" type="email" placeholder="Admin email"><input id="adPass" type="password" placeholder="Admin password"><button class="primary" onclick="adminLogin()">OPEN ADMIN PANEL</button></div>`;openModal()}
+async function adminLogin(){
+  const email=document.getElementById('adEmail').value.trim().toLowerCase();
+  const password=document.getElementById('adPass').value;
+
+  if(email!==ADMIN_EMAIL.toLowerCase()){
+    toast('Use the authorized VEYORA admin email');
+    return;
+  }
+  if(!password){
+    toast('Enter the admin password');
+    return;
+  }
+
+  const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
+
+  if(error){
+    if(error.message.toLowerCase().includes('invalid login credentials')){
+      toast('Supabase: admin account not found or password is incorrect');
+      document.getElementById('sheet').insertAdjacentHTML(
+        'beforeend',
+        '<div class="notice" style="margin-top:12px">Check Supabase → Authentication → Users. The user must be <b>mubashir098@gmail.com</b> with password <b>894375</b>. If the user already exists, reset its password in Supabase and try again.</div>'
+      );
+    } else if(error.message.toLowerCase().includes('email not confirmed')){
+      toast('Confirm the admin email in Supabase first');
+    } else {
+      toast(error.message);
+    }
+    return;
+  }
+
+  const user=data?.user;
+  if(!user){
+    toast('Login succeeded but no user session was returned');
+    return;
+  }
+
+  let {data:profile,error:profileError}=await supabaseClient
+    .from('profiles')
+    .select('role')
+    .eq('id',user.id)
+    .maybeSingle();
+
+  if(profileError){
+    await supabaseClient.auth.signOut();
+    toast('Profile table/RLS setup needs attention');
+    return;
+  }
+
+  // If this is the authorized admin email and the profile row is missing,
+  // create the admin profile. The SQL RLS policy permits the account to
+  // retain its admin role.
+  if(!profile){
+    const {error:insertError}=await supabaseClient.from('profiles').insert({
+      id:user.id,
+      name:'VEYORA Admin',
+      role:'admin'
+    });
+    if(insertError){
+      await supabaseClient.auth.signOut();
+      toast('Admin profile could not be created. Run the fixed SQL first.');
+      return;
+    }
+    profile={role:'admin'};
+  }
+
+  if(profile.role!=='admin'){
+    await supabaseClient.auth.signOut();
+    toast('Admin access denied');
+    return;
+  }
+
+  store.user={...user,role:'admin',name:'VEYORA Admin'};
+  await loadProducts();
+  await loadOrders();
+  closeModal();
+  page='admin';
+  document.querySelectorAll('.nav').forEach(x=>x.classList.remove('active'));
+  renderAdmin();
+  toast('Admin login successful');
+}
+function renderAdmin(){
+ document.getElementById('searchWrap').style.display='none';
+ document.getElementById('main').innerHTML=`<div class="page admin show"><div class="sectionHead"><h2>Admin Panel</h2><button class="outline" onclick="showPage('home')">Store</button></div>
+ <div class="notice">⚠️ VEYORA uses Supabase Auth and Postgres for customer accounts, carts, products and orders.</div>
+ <div class="adminCards"><div class="stat"><span class="small">Products</span><b>${store.products.length}</b></div><div class="stat"><span class="small">Orders</span><b>${store.orders.length}</b></div><div class="stat"><span class="small">Cart items</span><b>${cartCount()}</b></div><div class="stat"><span class="small">Customers</span><b>${store.user?1:0}</b></div></div>
+ <div class="sectionHead"><h2>Products</h2><button class="primary" onclick="openAddProduct()">+ ADD PRODUCT</button></div>
+ ${store.products.map(p=>`<div class="adminProduct"><div class="mini">${p.icon}</div><div style="flex:1"><b>${esc(p.name)}</b><div class="small">${money(p.price)} • ${esc(p.category)}</div></div><button class="outline" onclick="editProduct(${p.id})">EDIT</button><button class="danger" onclick="deleteProduct(${p.id})">DELETE</button></div>`).join('')}
+ <div class="sectionHead"><h2>Recent Orders</h2></div>${store.orders.length?store.orders.slice(0,10).map(o=>`<div class="profileBox" style="text-align:left;margin-top:10px"><b>#${o.id}</b> — ${o.status}<div class="small">${money(o.total)} • ${o.date}</div><select onchange="updateOrder('${o.id}',this.value)"><option ${o.status==='PENDING'?'selected':''}>PENDING</option><option ${o.status==='DISPATCHED'?'selected':''}>DISPATCHED</option><option ${o.status==='IN TRANSIT'?'selected':''}>IN TRANSIT</option><option ${o.status==='DELIVERED'?'selected':''}>DELIVERED</option></select></div>`).join(''):'<p class="small">No orders.</p>'}
+ <button class="danger" style="margin-top:25px" onclick="resetDemo()">RESET DEMO DATA</button></div>`;
+}
+function openAddProduct(p=null){
+ let x=p||{name:'',cat:'Smart Gadgets',price:99,old:149,discount:10,icon:'📦'};
+ document.getElementById('sheet').innerHTML=`<button class="close" onclick="closeModal()">×</button><h2>${p?'Edit':'Add'} Product</h2><div class="form"><label>Name<input id="ppName" value="${esc(x.name)}"></label><label>Category<input id="ppCat" value="${esc(x.cat)}"></label><label>Price<input id="ppPrice" type="number" value="${x.price}"></label><label>Old Price<input id="ppOld" type="number" value="${x.old}"></label><label>Discount %<input id="ppDisc" type="number" value="${x.discount}"></label><label>Icon / Emoji<input id="ppIcon" value="${esc(x.icon||'📦')}"></label><button class="primary" onclick="saveProduct(${p?p.id:'null'})">SAVE PRODUCT</button></div>`;openModal()
+}
+async function saveProduct(id){
+  let p={name:document.getElementById('ppName').value.trim(),category:document.getElementById('ppCat').value.trim(),price:+document.getElementById('ppPrice').value,old_price:+document.getElementById('ppOld').value,discount:+document.getElementById('ppDisc').value,icon:document.getElementById('ppIcon').value||'📦'};
+  if(!p.name||!p.price){toast('Product name and price required');return}
+  let result=id
+    ? await supabaseClient.from('products').update(p).eq('id',id)
+    : await supabaseClient.from('products').insert(p);
+  if(result.error){toast(result.error.message);return}
+  await loadProducts();closeModal();renderAdmin();toast('Product saved');
+}
+function editProduct(id){openAddProduct(store.products.find(p=>p.id===id))}
+async function deleteProduct(id){
+  if(!confirm('Delete this product?')) return;
+  const {error}=await supabaseClient.from('products').delete().eq('id',id);
+  if(error){toast(error.message);return}
+  await loadProducts(); renderAdmin();
+}
+async function updateOrder(id,status){const {error}=await supabaseClient.from('orders').update({status}).eq('id',id);if(error)toast(error.message);else{await loadOrders();renderAdmin()}}
+function resetDemo(){toast('Demo reset is disabled for the Supabase-connected store. Use the Supabase dashboard to manage data.')}
+function openModal(){document.getElementById('modal').classList.add('show')}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+let toastTimer;function toast(t){let e=document.getElementById('toast');if(!e){e=document.createElement('div');e.id='toast';e.style.cssText='position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#202938;color:#fff;padding:11px 17px;border-radius:12px;z-index:100;font-size:14px;box-shadow:0 8px 25px rgba(0,0,0,.2)';document.body.appendChild(e)}e.textContent=t;e.style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>e.style.display='none',2200)}
+initSupabase();
+</script>
+</body>
+</html>
